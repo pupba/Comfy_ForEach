@@ -1,0 +1,5 @@
+pillow
+boto3
+opencv-python-headless
+numpy
+# torch
