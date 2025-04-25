@@ -22,9 +22,9 @@ class IndexedImageSelectorNode:
         return (image_list[index],)
 
 
-class IndexedNameWithPrefixNode:
+class IndexedNameSelectorNode:
     """
-    Selects one image name using the index and adds a prefix to create a filename.
+    Selects one image name from image name list using the given index.
     """
     @classmethod
     def INPUT_TYPES(cls):
@@ -32,17 +32,16 @@ class IndexedNameWithPrefixNode:
             "required": {
                 "image_name_list": ("STRING",),
                 "index": ("INT", {"default": 0, "min": 0}),
-                "prefix": ("STRING", {"default": ""})
             }
         }
 
-    RETURN_TYPES = ("STRING","STRING")
-    RETURN_NAMES = ("file_name","folder_path")
+    RETURN_TYPES = ("STRING")
+    RETURN_NAMES = ("file_name")
     FUNCTION = "execute"
     CATEGORY = "ComfyForEach/Select"
 
-    def execute(self, image_name_list, index, prefix):
+    def execute(self, image_name_list, index):
         if index < 0 or index >= len(image_name_list):
             raise IndexError(f"Index {index} is out of bounds for name list of size {len(image_name_list)}")
         filename = str(image_name_list[index])
-        return (filename,prefix)
+        return (filename)

@@ -4,6 +4,9 @@ from PIL import Image, ImageOps
 import numpy as np
 import torch
 import logging
+import json
+import boto3
+from datetime import datetime
 
 class EventBridgeTriggerNode:
     """
@@ -14,9 +17,9 @@ class EventBridgeTriggerNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "end_image":("IMAGE",),
                 "is_last": ("BOOLEAN",),
                 "task_id": ("STRING", {"default": "unknown-task"}),
-                "log_folder": ("STRING", {"default": "./event_logs"})
             }
         }
 
@@ -25,41 +28,35 @@ class EventBridgeTriggerNode:
     OUTPUT_NODE = True
     CATEGORY = "ComfyForEach/AWS"
 
-    def trigger(self, is_last, task_id, log_folder):
+    def trigger(self, is_last, task_id,end_image=None):
         # ignore if not last
-        if not is_last:
+        if not is_last and end_image:
             print("[EventBridgeTriggerNode] Not the last index, skipping.")
             return {}
-
-        # ensure log folder exists
-        os.makedirs(log_folder, exist_ok=True)
-        is_error = False
-        # create event payload
-        if is_error:
-            event = {
-                "task_id": task_id,
-                "status": "FAILED",
-                "reason": "Workflow execution error"
-            }
-            filename = f"{task_id}_failed.json"
         else:
-            event = {
-                "task_id": task_id,
-                "status": "SUCCESS"
-            }
-            filename = f"{task_id}_success.json"
+            # AWS Event Bridge
+            # Changed Region
+            event = boto3.client("events",region_name="us-east-1")
 
-        # Save to file
-        print(os.getcwd())
-        save_path = os.path.join(log_folder, filename)
-        with open(save_path, "w", encoding="utf-8") as f:
-            json.dump(event, f, indent=2)
+            # Changed Your Message
+            resp = event.put_events(
+                Entries=[
+                    {
+                        "Source":"comfyui.ec2",
+                        "DetailType":"ComfyUI Task State",
+                        "Detail":json.dumps({
+                            "task_id":task_id,
+                            "status":"SUCCEEDED",
+                            "timestamp":datetime.utcnow().isoformat(),
+                            "error_msg":""
+                        }),
+                        "EventBusName":"default"
+                    }
+                ]
+            )
+            if resp.get("FailedEntryCount", 0) > 0:
+                raise RuntimeError("❌ EventBridge 전송 실패")
+            else:
+                print("✅ EventBridge 전송 성공")
 
-        print(f"[EventBridgeTriggerNode] Logged event: {save_path}")
-
-        # If using boto3:
-        # import boto3
-        # client = boto3.client("events")
-        # client.put_events(...)
-
-        return {}
+            return {}

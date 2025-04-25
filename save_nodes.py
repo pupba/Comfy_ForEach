@@ -12,7 +12,9 @@ class SaveExactNameImageNode:
             "required": {
                 "image": ("IMAGE",),
                 "filename": ("STRING", {"default": "output.png"}),
-                "folder_path": ("STRING", {"default": "./output"}),
+                "root_path": ("STRING", {"default": "./output"}),
+                "task_id":("STRING",{"default":"abc123"}),
+                "suffix_path": ("STRING", {"default": ""}),
             }
         }
 
@@ -21,9 +23,10 @@ class SaveExactNameImageNode:
     OUTPUT_NODE = True
     CATEGORY = "ComfyForEach/Save"
 
-    def save(self, image, filename, folder_path):
+    def save(self, image,filename,root_path,task_id,suffix_path):
         # ensure folder exists
-        os.makedirs(folder_path, exist_ok=True)
+        folder_path = os.path.join(root_path,task_id,suffix_path)
+        os.makedirs(folder_path,exist_ok=True)
 
         # get image tensor (B,H,W,C)
         img = image[0].cpu().numpy()  # [H, W, C]

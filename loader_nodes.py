@@ -11,14 +11,9 @@ class FolderImageLoaderNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "taskid": ("STRING", {
-                    "multiline": False,
-                    "default": "abc123"  # default path (can be changed in UI)
-                }),
-                "folder_path": ("STRING", {
-                    "multiline": False,
-                    "default": "./images"  # default path (can be changed in UI)
-                })
+                "root_path":("STRING",{"default":""}),
+                "task_id": ("STRING", {"default": "abc123"}),
+                "suffix_path":("STRING",{"default":""})
             }
         }
     RETURN_TYPES = ("IMAGE", "STRING")
@@ -26,9 +21,10 @@ class FolderImageLoaderNode:
     FUNCTION = "execute"
     CATEGORY = "ComfyForEach/Load"
     
-    def execute(self, taskid,folder_path):
+    def execute(self, root_path,task_id,suffix_path):
         # Get TaskID 노드를 가장 먼저 실행하기 위함 Dummy 호출
         # Get list of .png files in the folder
+        folder_path = os.path.join(root_path,task_id,suffix_path)
         if not os.path.isdir(folder_path):
             raise ValueError(f"Folder not found: {folder_path}")
         files = sorted(f for f in os.listdir(folder_path) if f.lower().endswith(".png"))

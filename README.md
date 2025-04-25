@@ -1,6 +1,6 @@
 # 📦 ComfyForEach: Custom ComfyUI Nodes for Batch Image Processing and Used in AWS
 
-![version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![license](https://img.shields.io/badge/license-MIT-green.svg)
 
 A collection of ComfyUI custom nodes designed for image batch processing, per-index image operations, and AWS integration using EventBridge.
@@ -36,6 +36,7 @@ except Exception as e:
     import logging
     from datetime import datetime
     import traceback
+    import boto3
 
     logger = logging.getLogger("comfy_node_error")
     node_name = obj.__class__.__name__
@@ -44,7 +45,28 @@ except Exception as e:
     logger.error(error_msg)
     logger.error(traceback.format_exc())
 
-    # Here EventBridge Code
+    event = boto3.client("events",region_name="us-east-1")
+
+    # Changed Your Message
+    resp = event.put_events(
+        Entries=[
+            {
+                "Source":"comfyui.ec2",
+                "DetailType":"ComfyUI Task State",
+                "Detail":json.dumps({
+                    "task_id":task_id,
+                    "status":"FAILED",
+                    "timestamp":datetime.utcnow().isoformat(),
+                    "error_msg":error_msg
+                }),
+                "EventBusName":"default"
+            }
+        ]
+    )
+    if resp.get("FailedEntryCount", 0) > 0:
+        raise RuntimeError("❌ EventBridge Send Failed")
+    else:
+        print("✅ EventBridge Send Success")
 
     raise
 #################################
@@ -143,13 +165,13 @@ def setup_logger(log_level: str = 'INFO', capacity: int = 300, use_stdout: bool 
 
 - **Output** : image (IMAGE)
 
-### 🔹 IndexedNameWithPrefixNode
+### 🔹 IndexedNameSelectorNode
 
-- Retrieves a specific image filename using an index and prepends a folder path.
+- Selects a specific image from a list using an index.
 
 - **Category** : ComfyForEach/Select
 
-- **Outputs** : file_name, folder_path (STRING)
+- **Outputs** : file_name (STRING)
 
 ### 🔹 IsLastIndexNode
 
