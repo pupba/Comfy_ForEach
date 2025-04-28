@@ -36,7 +36,7 @@ class IndexedNameSelectorNode:
         }
 
     RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("file_name")
+    RETURN_NAMES = ("file_name",)
     FUNCTION = "execute"
     CATEGORY = "ComfyForEach/Select"
 
