@@ -10,6 +10,6 @@ Repository = "https://github.com/pupba/Comfy_ForEach"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "pupba"
 DisplayName = "Comfy_ForEach"
-Icon = ""
+Icon = "https://avatars.githubusercontent.com/u/53106728?v=4"
