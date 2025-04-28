@@ -1,0 +1,15 @@
+[project]
+name = "foreach"
+description = "A collection of ComfyUI custom nodes designed for image batch processing, per-index image operations, and AWS integration using EventBridge."
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["pillow", "boto3", "opencv-python-headless", "numpy", "# torch"]
+
+[project.urls]
+Repository = "https://github.com/pupba/Comfy_ForEach"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "Comfy_ForEach"
+Icon = ""
