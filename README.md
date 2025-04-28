@@ -5,7 +5,7 @@
 
 A collection of ComfyUI custom nodes designed for image batch processing, per-index image operations, and AWS integration using EventBridge.
 
-_🔥 `AWS Event Bridge` code updated after testing._
+[👉 Comfy Registry Link](https://registry.comfy.org/nodes/foreach)
 
 ## 📁 Directory Structure
 
@@ -198,7 +198,7 @@ def setup_logger(log_level: str = 'INFO', capacity: int = 300, use_stdout: bool 
 
 - Simulates AWS EventBridge notification.
 
-- Writes a SUCCESS or FAILED event as a .json log based on is_last.
+- Writes a SUCCESS or FAILED event as a .json log based on is_last. (🔥 Please change it to the region of your **Event Bridge** that you will definitely request. And please also grant it from **IAM**.)
 
 - **Category** : ComfyForEach/AWS
 
