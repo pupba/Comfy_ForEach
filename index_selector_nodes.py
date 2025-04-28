@@ -44,4 +44,4 @@ class IndexedNameSelectorNode:
         if index < 0 or index >= len(image_name_list):
             raise IndexError(f"Index {index} is out of bounds for name list of size {len(image_name_list)}")
         filename = str(image_name_list[index])
-        return (filename)
+        return (filename,)

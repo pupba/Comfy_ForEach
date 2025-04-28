@@ -37,6 +37,8 @@ except Exception as e:
     from datetime import datetime
     import traceback
     import boto3
+    import custom_nodes.Comfy_ForEach.context as context
+    import json
 
     logger = logging.getLogger("comfy_node_error")
     node_name = obj.__class__.__name__
@@ -83,6 +85,7 @@ setup_logger(log_level=args.verbose, use_stdout=args.log_stdout,log_path="./logs
 ```python
 ...
 from logging.handlers import TimedRotatingFileHandler
+import os
 ...
 
 def setup_logger(log_level: str = 'INFO', capacity: int = 300, use_stdout: bool = False,log_path:str | None=None):

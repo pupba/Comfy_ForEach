@@ -30,7 +30,7 @@ class EventBridgeTriggerNode:
 
     def trigger(self, is_last, task_id,end_image=None):
         # ignore if not last
-        if not is_last and end_image:
+        if not is_last and end_image is not None:
             print("[EventBridgeTriggerNode] Not the last index, skipping.")
             return {}
         else:

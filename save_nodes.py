@@ -31,7 +31,7 @@ class SaveExactNameImageNode:
         # get image tensor (B,H,W,C)
         img = image[0].cpu().numpy()  # [H, W, C]
         img = (img * 255).clip(0, 255).astype(np.uint8)
-        img = Image.fromarray(img)
+        img = Image.fromarray(img).convert("RGBA")
 
         # save
         full_path = os.path.join(folder_path, filename)
