@@ -4,6 +4,11 @@ from .save_nodes import SaveExactNameImageNode
 from .logic_nodes import IsLastIndexNode
 from .aws_event_node import EventBridgeTriggerNode
 from .task_manager import TaskIDStorageNode
+from .load_pre_models import (
+    StringViewer,
+    LoadPreCheckpointModel,
+    LoadPreControlNetModel,
+)
 
 NODE_CLASS_MAPPINGS = {
     "FolderImageLoaderNode": FolderImageLoaderNode,
@@ -12,7 +17,10 @@ NODE_CLASS_MAPPINGS = {
     "SaveExactNameImageNode": SaveExactNameImageNode,
     "IsLastIndexNode": IsLastIndexNode,
     "EventBridgeTriggerNode": EventBridgeTriggerNode,
-    "TaskIDStorageNode":TaskIDStorageNode,
+    "TaskIDStorageNode": TaskIDStorageNode,
+    "StringViewer": StringViewer,
+    "LoadPreCheckpointModel": LoadPreCheckpointModel,
+    "LoadPreControlNetModel": LoadPreControlNetModel,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -22,5 +30,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "SaveExactNameImageNode": "Save Image with Exact Filename",
     "IsLastIndexNode": "Check If Last Index",
     "EventBridgeTriggerNode": "Trigger EventBridge (Simulated)",
-    "TaskIDStorageNode":"Get TaskID"
+    "TaskIDStorageNode": "Get TaskID",
+    "StringViewer": "Simple String View",
+    "LoadPreCheckpointModel": "Load Pre Checkpoint Model",
+    "LoadPreControlNetModel": "Load Pre ControlNet Model",
 }

@@ -204,6 +204,36 @@ def setup_logger(log_level: str = 'INFO', capacity: int = 300, use_stdout: bool 
 
 - **Output** : None (Terminal node)
 
+### 🔹 StringViewer
+
+- Displays two input string directly in the terminal
+
+- Can be used as a terminal output node for debugging or displaying intermediate results.
+
+- **Category** : ComfyForEach/PreLoad
+
+- **Output** : None (Terminal node)
+
+### 🔹 LoadPreCheckpointModel
+
+- Loads and validates a pre-loaded checkpoint model.
+
+- Primarily used to check the successful loading of a checkpoint model before proceeding with further processing.
+
+- **Category** : ComfyForEach/PreLoad
+
+- **Output** : STRING
+
+### 🔹 LoadPreControlNetModel
+
+- Loads and validates a pre-loaded ControlNet model.
+
+- Verifies that the ControlNet model object is not empty.
+
+- **Category** : ComfyForEach/PreLoad
+
+- **Output** : STRING
+
 ## 🧪 Requirements
 
 Install dependencies:
@@ -237,6 +267,8 @@ numpy
    - ComfyForEach/AWS
 
    - ComfyForEach/TaskID
+
+   - ComfyForEach/PreLoad
 
 ```bash
 python3 main.py --use-split-cross-attention --fast --input-directory ./test --output-directory ./test --verbose ERROR
